@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 
 // Rota POST para cadastrar novo usuário
 router.post('/', async (req, res) => {
-  const { nome, email, senha } = req.body;
+  const { nome, email, senha, cpf, telefone } = req.body;
 
   if (!nome || !email || !senha) {
     return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
@@ -23,8 +23,8 @@ router.post('/', async (req, res) => {
 
   try {
     const [result] = await connection.execute(
-      'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)',
-      [nome, email, senha]
+      'INSERT INTO users (nome, email, senha, cpf, telefone) VALUES (?, ?, ?, ?, ?)',
+      [nome, email, senha, cpf, telefone]
     );
 
     res.status(201).json({
