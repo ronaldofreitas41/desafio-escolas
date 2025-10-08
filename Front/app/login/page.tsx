@@ -1,5 +1,6 @@
-import { LoginForm } from "@/components/login-form"
+
 import { GraduationCap, Shield, Zap, Database } from "lucide-react"
+import { LoginForm } from "../components/login-form"
 
 export default function LoginPage() {
   return (
