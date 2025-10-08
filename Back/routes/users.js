@@ -37,4 +37,48 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.delete('/', async (req, res) => {
+  const { id } = req.body;
+
+  if (!id) {
+    return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+  }
+
+  try {
+    const [result] = await connection.execute(
+      'DELETE FROM users WHERE id = ?',
+      [id]
+    );
+
+    res.status(201).json({
+      mensagem: 'Usuário deletado com sucesso',
+    });
+  } catch (error) {
+    console.error('Erro ao excluir usuário:', error.message);
+    res.status(500).json({ error: 'Erro ao excluir usuário' });
+  }
+});
+
+router.put('/', async (req, res) => {
+  const { id,nome, email, senha, cpf, telefone } = req.body;
+
+  if (!nome || !email || !senha || !id|| !cpf|| !telefone ) {
+    return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+  }
+
+  try {
+    const [result] = await connection.execute(
+      'UPDATE users SET nome = ?, email = ?, senha = ?, cpf = ?, telefone = ? WHERE id = ?',
+      [nome, email, senha, cpf, telefone, id]
+    );
+
+    res.status(201).json({
+      mensagem: 'Usuário atualizado com sucesso',
+    });
+  } catch (error) {
+    console.error('Erro ao atualizar usuário:', error.message);
+    res.status(500).json({ error: 'Erro ao atualizar usuário' });
+  }
+});
+
 export default router;
