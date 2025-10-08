@@ -8,32 +8,33 @@ router.get('/', async (req, res) => {
     const [rows] = await connection.execute('SELECT * FROM escolas');
     res.json(rows);
   } catch (error) {
-    console.error('Erro ao buscar usuários:', error.message);
-    res.status(500).json({ error: 'Erro ao buscar usuários' });
+    console.error('Erro ao buscar escolas:', error.message);
+    res.status(500).json({ error: 'Erro ao buscar escolas' });
   }
 });
 
-// Rota POST para cadastrar novo usuário
+// Rota POST para cadastrar nova Escola
 router.post('/', async (req, res) => {
-  const { nome, email, senha, cpf, telefone } = req.body;
+  const { NOMEDEP, DE, MUN, CD_IBGE, DISTR, COD_ESC, CODESCMEC, NOMESC, SITUACAO, TIPOESC, ENDESC, NUMESC, COMPLEND, CEP, BAIESC, ZONA, DS_LONGITUDE, DS_LATITUDE, CODVINC } = req.body;
 
-  if (!nome || !email || !senha) {
+  if (!NOMEDEP || !DE || !MUN || !CD_IBGE || !DISTR || !COD_ESC || !CODESCMEC || !NOMESC || !SITUACAO || !TIPOESC || !ENDESC || !NUMESC || !COMPLEND || !CEP || !BAIESC || !ZONA || !DS_LONGITUDE || !DS_LATITUDE || !CODVINC) {
     return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
   }
 
+
   try {
     const [result] = await connection.execute(
-      'INSERT INTO escolas (nome, email, senha, cpf, telefone) VALUES (?, ?, ?, ?, ?)',
-      [nome, email, senha, cpf, telefone]
+      'INSERT INTO escolas (NOMEDEP, DE,MUN,CD_IBGE,DISTR,COD_ESC,CODESCMEC,NOMESC,SITUACAO,TIPOESC,ENDESC,NUMESC,COMPLEND,CEP,BAIESC,ZONA,DS_LONGITUDE,DS_LATITUDE,CODVINC) VALUES (?, ?, ?, ?, ?,?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [NOMEDEP, DE, MUN, CD_IBGE, DISTR, COD_ESC, CODESCMEC, NOMESC, SITUACAO, TIPOESC, ENDESC, NUMESC, COMPLEND, CEP, BAIESC, ZONA, DS_LONGITUDE, DS_LATITUDE, CODVINC]
     );
 
     res.status(201).json({
-      mensagem: 'Usuário cadastrado com sucesso',
+      mensagem: 'Escola cadastrado com sucesso',
       id: result.insertId,
     });
   } catch (error) {
-    console.error('Erro ao cadastrar usuário:', error.message);
-    res.status(500).json({ error: 'Erro ao cadastrar usuário' });
+    console.error('Erro ao cadastrar Escolas:', error.message);
+    res.status(500).json({ error: 'Erro ao cadastrar Escolas' });
   }
 });
 

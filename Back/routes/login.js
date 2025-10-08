@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
 
   try {
     // Busca os usuários da API externa
-    const response = await fetch(`${process.env.BACKURRL}/users`, {
+    const response = await fetch(`${process.env.BACKURL}/users`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
