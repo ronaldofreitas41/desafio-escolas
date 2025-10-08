@@ -1,13 +1,11 @@
 import express from 'express'
+import escolasRoutes from './escolas.js'
+import userRoutes from './users.js'
 
-
-const app = express();
-const router = app.router();
-const escolasRoutes = require('./escolas');
-const userRoutes = require('./users');
+const router = express.Router();
 
 router.use('/users',userRoutes);
-router.use('/users',escolasRoutes);
+router.use('/escolas',escolasRoutes);
 
 
-module.exports = router;
+export default router;
