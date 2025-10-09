@@ -2,6 +2,8 @@ import express from 'express';
 import routes from './routes/index.js';
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';
+import cors from 'cors';
+
 
 dotenv.config();
 
@@ -9,6 +11,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cors());
 
 // rota raiz
 app.get('/', (req, res) => {
