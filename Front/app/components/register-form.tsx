@@ -36,8 +36,11 @@ export function RegisterForm() {
     const result = confereSenhas(password, passwordConfirmation);
     if (result) {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_BACK_URL}/`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_BACK_URL}/users`, {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
           body: JSON.stringify({
             nome: nome,
             email: email,
@@ -49,7 +52,7 @@ export function RegisterForm() {
 
         if (res.ok) {
           alert("Usuário salvo como esperado")
-          redirect("/login");
+          router.push("/login");
         } else {
           alert("verifique sua API" + res.status);
         }
@@ -173,7 +176,7 @@ export function RegisterForm() {
               <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="passwordConfirmation"
-                type="passwordConfirmation"
+                type="password"
                 placeholder="••••••••"
                 value={passwordConfirmation}
                 onChange={(e) => setPasswordConfirmation(e.target.value)}
