@@ -86,17 +86,20 @@ export function RegisterForm() {
             </div>
           </div>
 
-          <div className="relative">
-            <IdCard className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="text"
-              value={CPF}
-              onChange={handleCPFChange}
-              placeholder="000.000.000-00"
-              maxLength={14}
-              className="pl-10"
-              required
-            />
+          <div className="space-y-2">
+            <Label htmlFor="nome">CPF</Label>
+            <div className="relative">
+              <IdCard className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="text"
+                value={CPF}
+                onChange={handleCPFChange}
+                placeholder="000.000.000-00"
+                maxLength={14}
+                className="pl-10"
+                required
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
