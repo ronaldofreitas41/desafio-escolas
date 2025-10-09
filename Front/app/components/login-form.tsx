@@ -3,14 +3,14 @@
 import type React from "react"
 
 import { useState } from "react"
-import { redirect, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 import { Alert, AlertDescription } from "./ui/alert"
 import { Lock, Mail } from "lucide-react"
-import { authAPI } from "@/lib/api"
+
 
 export function LoginForm() {
   const router = useRouter()
@@ -21,7 +21,28 @@ export function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    redirect("/dashbooard");
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_BACK_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email,
+          senha: password,
+        })
+      });
+
+      if (res.ok) {
+        alert("Usuário logado com sucesso")
+        router.push("/dashboard");
+      } else {
+        alert("verifique sua API, Status: " + res.status);
+      }
+
+    } catch {
+      alert("Erro ao acessar seu usuário")
+    }
   }
 
   return (
