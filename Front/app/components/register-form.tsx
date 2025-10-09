@@ -10,8 +10,7 @@ import { Label } from "./ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 import { Alert, AlertDescription } from "./ui/alert"
 import { IdCard, Lock, Mail, Phone } from "lucide-react"
-import { authAPI } from "@/lib/api"
-import InputMask from "react-input-mask";
+import { ToastContainer, toast } from 'react-toastify';
 
 export function RegisterForm() {
   const router = useRouter()
@@ -24,9 +23,43 @@ export function RegisterForm() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
+  function confereSenhas(senha: string, confirmacao: string) {
+    if (senha === confirmacao) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    redirect("/dashbooard");
+    const result = confereSenhas(password, passwordConfirmation);
+    if (result) {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_BACK_URL}/`, {
+          method: "POST",
+          body: JSON.stringify({
+            nome: nome,
+            email: email,
+            senha: password,
+            cpf: CPF,
+            telefone: telefone
+          })
+        });
+
+        if (res.ok) {
+          alert("Usuário salvo como esperado")
+          redirect("/login");
+        } else {
+          alert("verifique sua API" + res.status);
+        }
+
+      } catch {
+        alert("Erro ao salvar usuário no banco")
+      }
+    } else {
+      alert("senhas nao conferem");
+    }
   }
 
   const formatCPF = (value: string) => {
@@ -73,11 +106,11 @@ export function RegisterForm() {
           <div className="space-y-2">
             <Label htmlFor="nome">Nome</Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <IdCard className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="nome"
                 type="nome"
-                placeholder="seu@nome.com"
+                placeholder="nome"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
                 className="pl-10"
