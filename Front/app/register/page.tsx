@@ -1,9 +1,11 @@
-
-import Image from "next/image"
-import { LoginForm } from "../components/login-form"
+'use Client'
+import { RegisterForm } from "../components/register-form"
 import Link from "next/link"
+import Image from "next/image"
 
-export default function LoginPage() {
+
+
+export default function RegisterPage() {
     return (
         <div className="min-h-screen flex">
             <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 relative overflow-hidden">
@@ -77,7 +79,7 @@ export default function LoginPage() {
                         </div>
                     </div>
 
-                    <LoginForm />
+                        <RegisterForm />
 
                     <div className="text-center space-y-4">
                         {/* <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -88,7 +90,7 @@ export default function LoginPage() {
                         </div> */}
 
                         <div className="pt-4 border-t">
-                            <Link href="/register" className="text-primary hover:underline text-sm font-medium">Criar Conta</Link>
+                            <Link href="/login" className="text-primary hover:underline text-sm font-medium">Login</Link>
                         </div>
                     </div>
                 </div>

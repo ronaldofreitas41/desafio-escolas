@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
@@ -21,21 +21,7 @@ export function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError("")
-    setLoading(true)
-
-    try {
-      const response = await authAPI.login({ email, password })
-
-      // Salvar token e dados do usuário
-      localStorage.setItem("token", response.token)
-      localStorage.setItem("user", JSON.stringify(response.user))
-
-      router.push("/dashboard")
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro ao fazer login. Verifique suas credenciais.")
-      setLoading(false)
-    }
+    redirect("/dashbooard");
   }
 
   return (
