@@ -38,4 +38,52 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.delete('/', async (req, res) => {
+  const { id } = req.body;
+
+  if (!id) {
+    return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+  }
+
+
+  try {
+    const [result] = await connection.execute(
+      'DELETE FROM escolas WHERE id = ?',
+      [id]
+    );
+
+    res.status(201).json({
+      mensagem: 'Escola Deletada com sucesso',
+    });
+  } catch (error) {
+    console.error('Erro ao Deletar Escolas:', error.message);
+    res.status(500).json({ error: 'Erro ao Deletar Escolas' });
+  }
+});
+
+router.put('/', async (req, res) => {
+  const { NOMEDEP, DE, MUN, CD_IBGE, DISTR, COD_ESC, CODESCMEC, NOMESC, SITUACAO, TIPOESC, ENDESC, NUMESC, COMPLEND, CEP, BAIESC, ZONA, DS_LONGITUDE, DS_LATITUDE, CODVINC, id } = req.body;
+
+  if (!NOMEDEP || !DE || !MUN || !CD_IBGE || !DISTR || !COD_ESC || !CODESCMEC || !NOMESC || !SITUACAO || !TIPOESC || !ENDESC || !NUMESC || !COMPLEND || !CEP || !BAIESC || !ZONA || !DS_LONGITUDE || !DS_LATITUDE || !CODVINC || !id) {
+    return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+  }
+
+
+  try {
+    const [result] = await connection.execute(
+      `UPDATE escolas SET NOMEDEP = ?, DE = ?, MUN = ?, CD_IBGE = ?, DISTR = ?, COD_ESC = ?, CODESCMEC = ?, NOMESC = ?, SITUACAO = ?, TIPOESC = ?, ENDESC = ?, NUMESC = ?, COMPLEND = ?, CEP = ?, BAIESC = ?, ZONA = ?, DS_LONGITUDE = ?, DS_LATITUDE = ?, CODVINC = ? 
+  WHERE id = ?`,
+      [NOMEDEP, DE, MUN, CD_IBGE, DISTR, COD_ESC, CODESCMEC, NOMESC, SITUACAO, TIPOESC, ENDESC, NUMESC, COMPLEND, CEP, BAIESC, ZONA, DS_LONGITUDE, DS_LATITUDE, CODVINC, id]
+    );
+
+
+    res.status(201).json({
+      mensagem: 'Escola Atualizada com sucesso',
+    });
+  } catch (error) {
+    console.error('Erro ao Atualizar Escolas:', error.message);
+    res.status(500).json({ error: 'Erro ao Atualizar Escolas' });
+  }
+});
+
 export default router;
