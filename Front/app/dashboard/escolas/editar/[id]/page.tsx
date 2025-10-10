@@ -1,8 +1,9 @@
 import { DashboardHeader } from "../../../../components/dashboard-header"
-import { EscolaForm } from "../../../../components/escola-form"
+import { EscolaFormCreate } from "../../../../components/escola-form-create"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { Button } from "../../../../components/ui/button"
+import { EscolaFormUpdate } from "@/app/components/escola-form-update"
 
 export default function EditarEscolaPage({ params }: { params: { id: string } }) {
   return (
@@ -22,7 +23,7 @@ export default function EditarEscolaPage({ params }: { params: { id: string } })
           </div>
         </div>
 
-        <EscolaForm escolaId={params.id} />
+        <EscolaFormUpdate escolaId={parseInt(params.id)} />
       </main>
     </div>
   )

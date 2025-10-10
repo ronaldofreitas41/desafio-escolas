@@ -70,7 +70,7 @@ export function EscolasTable() {
     const handleDelete = async (id: String) => {
         try {
             await fetch(`${process.env.NEXT_PUBLIC_BASE_BACK_URL}/escolas`, {
-                method:'DELETE',
+                method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -113,7 +113,48 @@ export function EscolasTable() {
         )
     }
 
-    const headers = ["nome", "endereco", "bairro", "distrito", "tipo"]
+    const headers = ["Nome da Rede de Ensino",
+        "Nome da Diretoria de Ensino",
+        "Nome do Muncípio",
+        "CODIGO IBGE",
+        "Nome do Distrito",
+        "Código da Escola",
+        "Código da Escola no MEC",
+        "Nome da Escola",
+        "Situação da Escola",
+        "Tipo da Escola",
+        "Endereço",
+        "Número do Endereço",
+        "Complemento do Endereço",
+        "CEP",
+        "Bairro",
+        "Zona",
+        "Longitude",
+        "Latitude",
+        "Código da Vinculadora"
+    ]
+
+    const cells = [
+        "NOMEDEP",
+        "DE",
+        "MUN",
+        "CD_IBGE",
+        "DISTR",
+        "COD_ESC",
+        "CODESCMEC",
+        "NOMESC",
+        "SITUACAO",
+        "TIPOESC",
+        "ENDESC",
+        "NUMESC",
+        "COMPLEND",
+        "CEP",
+        "BAIESC",
+        "ZONA",
+        "DS_LONGITUDE",
+        "DS_LATITUDE",
+        "CODVINC"
+    ]
 
     return (
         <>
@@ -151,7 +192,7 @@ export function EscolasTable() {
                                 <TableHeader>
                                     <TableRow>
                                         {headers.map((header) => (
-                                            <TableHead key={header}>{header.charAt(0).toUpperCase() + header.slice(1)}</TableHead>
+                                            <TableHead className="min-w-[150px]" key={header}>{header.charAt(0).toUpperCase() + header.slice(1)}</TableHead>
                                         ))}
                                         <TableHead className="text-right">Ações</TableHead>
                                     </TableRow>
@@ -159,7 +200,7 @@ export function EscolasTable() {
                                 <TableBody>
                                     {filteredEscolas.map((escola) => (
                                         <TableRow key={escola.id?.toString()}>
-                                            {headers.map((header) => (
+                                            {cells.map((header) => (
                                                 <TableCell key={header}>{String(escola[header as keyof Escola] ?? "-")}</TableCell>
                                             ))}
                                             <TableCell className="text-right">

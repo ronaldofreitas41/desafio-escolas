@@ -12,18 +12,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu"
-import { authAPI } from "@/lib/api"
+
 
 export function DashboardHeader() {
   const router = useRouter()
 
   const handleLogout = () => {
-    authAPI.logout()
     router.push("/login")
   }
 
-  const user = typeof window !== "undefined" ? authAPI.getCurrentUser() : null
-  const userEmail = user?.email || ""
+  const user = typeof window !== "undefined" ? "" : null
+  const userEmail = "ronaldinho.lfs@gmail.com"
 
   return (
     <header className="sticky top-0 z-50 border-b bg-white shadow-sm">

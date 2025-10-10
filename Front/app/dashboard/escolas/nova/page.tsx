@@ -1,5 +1,5 @@
 import { DashboardHeader } from "../../../components/dashboard-header"
-import { EscolaForm } from "../../../components/escola-form"
+import { EscolaFormCreate } from "../../../components/escola-form-create"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { Button } from "../../../components/ui/button"
@@ -22,7 +22,7 @@ export default function NovaEscolaPage() {
           </div>
         </div>
 
-        <EscolaForm />
+        <EscolaFormCreate />
       </main>
     </div>
   )

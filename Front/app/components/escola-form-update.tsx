@@ -4,21 +4,21 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
-import { Button } from "../components/ui/button"
-import { Input } from "../components/ui/input"
-import { Label } from "../components/ui/label"
-import { Alert, AlertDescription } from "../components/ui/alert"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
+import { Button } from "./ui/button"
+import { Input } from "./ui/input"
+import { Label } from "./ui/label"
+import { Alert, AlertDescription } from "./ui/alert"
 import { CheckCircle2, AlertCircle } from "lucide-react"
 import { Escola } from "../utils/types"
 
 
-// interface EscolaFormProps {
-//     escolaId?: string
-// }
+interface EscolaFormProps {
+    escolaId?: Number
+}
 
 
-export function EscolaForm() {
+export function EscolaFormUpdate(escolaId: EscolaFormProps) {
     const router = useRouter()
     const [formData, setFormData] = useState<Escola>()
     const [nomeDep, setNomeDep] = useState("");
@@ -44,29 +44,78 @@ export function EscolaForm() {
     const [loadingData, setLoadingData] = useState(false)
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState("")
+    const id = Object.values(escolaId)[0]
+    const body = JSON.stringify({
+        "NOMEDEP": nomeDep,
+        "DE": de,
+        "MUN": mun,
+        "CD_IBGE": cdIBGE,
+        "DISTR": distr,
+        "COD_ESC": codEsc,
+        "CODESCMEC": codEscMec,
+        "NOMESC": nomeEsc,
+        "SITUACAO": situacao,
+        "TIPOESC": tipoEsc,
+        "ENDESC": endEsc,
+        "NUMESC": numEsc,
+        "COMPLEND": compleEnd,
+        "CEP": cep,
+        "BAIESC": baiEsc,
+        "ZONA": zona,
+        "DS_LONGITUDE": dsLongitude,
+        "DS_LATITUDE": dsLatitude,
+        "CODVINC": codVinc,
+        "id": id
+    })
+
 
     useEffect(() => {
         loadEscola()
-
-    },[]);
+    }, []);
 
     const loadEscola = async () => {
         console.log("aqui!")
         try {
             setLoadingData(true)
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_BACK_URL}/escolas`, {
+
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_BACK_URL}/escolas/${id}`, {
                 method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             })
-            console.log("Escolas: ", res)
+
+            if (res.ok) {
+
+                const data = await res.json();
+
+                setNomeDep(data.NOMEDEP);
+                setDe(data.DE);
+                setMun(data.MUN);
+                setcdIBGE(data.CD_IBGE);
+                setDistr(data.DISTR);
+                setCodEsc(data.COD_ESC);
+                setCodEscMec(data.CODESCMEC);
+                setNomeEsc(data.NOMESC);
+                setSituacao(data.SITUACAO);
+                setTipoEsc(data.TIPOESC);
+                setEndesc(data.ENDESC);
+                setNumEsc(data.NUMESC);
+                setCompleEnd(data.COMPLEND);
+                setCep(data.CEP);
+                setBaiEsc(data.BAIESC);
+                setZona(data.ZONA);
+                setDsLongitude(data.DS_LONGITUDE);
+                setDsLatitude(data.DS_LATITUDE);
+                setCodVinc(data.CODVINC);
+
+            }
+
         } catch (err) {
             setError(err instanceof Error ? err.message : "Erro ao carregar escola")
         } finally {
             setLoadingData(false)
         }
-    }
-
-    const handleChange = (field: keyof Escola, value: string | number) => {
-        // setFormData((prev) => ({ ...prev, [field]: value }))
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -75,6 +124,19 @@ export function EscolaForm() {
         setError("")
 
         try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_BACK_URL}/escolas`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: body
+            });
+
+            if (res.ok) {
+                router.push("/dashboard/escolas")
+            } else {
+                alert("Erro no PUT")
+            }
 
         } catch (err) {
             setError(err instanceof Error ? err.message : "Erro ao salvar escola. Tente novamente.")
@@ -95,9 +157,9 @@ export function EscolaForm() {
     return (
         <Card className="border-border">
             <CardHeader>
-                <CardTitle>{"Nova Escola"}</CardTitle>
+                <CardTitle>{"Atualizar Escola"}</CardTitle>
                 <CardDescription>
-                    {"Preencha os dados da nova escola"}
+                    {"Atualize os dados a seguir"}
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -177,7 +239,11 @@ export function EscolaForm() {
                             <Input
                                 id="codEsc"
                                 value={codEsc}
-                                onChange={(e) => setCodEsc(parseInt(e.target.value))}
+                                onChange={(e) => {
+                                    const value = parseInt(e.target.value);
+                                    setCodEsc(isNaN(value) ? 0 : value);
+                                }}
+
                                 placeholder="Código da Escola"
                                 required
                             />
@@ -188,7 +254,11 @@ export function EscolaForm() {
                             <Input
                                 id="CodMec"
                                 value={codEscMec}
-                                onChange={(e) => setCodEscMec(parseInt(e.target.value))}
+                                onChange={(e) => {
+                                    const value = parseInt(e.target.value);
+                                    setCodEscMec(isNaN(value) ? 0 : value);
+                                }}
+
                                 placeholder="Codigo do MEC"
                                 required
                             />
@@ -243,29 +313,40 @@ export function EscolaForm() {
                             <Input
                                 id="numero"
                                 value={numEsc}
-                                onChange={(e) => setNumEsc(parseInt(e.target.value))}
+                                onChange={(e) => {
+                                    const value = parseInt(e.target.value);
+                                    setNumEsc(isNaN(value) ? 0 : value);
+                                }}
+
                                 placeholder="Numero do Endereco"
                                 required
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="complemento">Complemento do Endereço:</Label>
+                            <Label htmlFor="comp">Complemento:</Label>
                             <Input
-                                id="complemento"
-                                value={tipoEsc}
-                                onChange={(e) => setCompleEnd(parseInt(e.target.value))}
+                                id="comp"
+                                value={compleEnd}
+                                onChange={(e) => {
+                                    const value = parseInt(e.target.value);
+                                    setCompleEnd(isNaN(value) ? 0 : value);
+                                }}
+
                                 placeholder="Complemento"
                                 required
                             />
                         </div>
-
                         <div className="space-y-2">
                             <Label htmlFor="Cep">CEP:</Label>
                             <Input
                                 id="Cep"
                                 value={cep}
-                                onChange={(e) => setCep(parseInt(e.target.value))}
+                                onChange={(e) => {
+                                    const value = parseInt(e.target.value);
+                                    setCep(isNaN(value) ? 0 : value);
+                                }}
+
                                 placeholder="Cep da Escola"
                                 required
                             />
@@ -298,7 +379,11 @@ export function EscolaForm() {
                             <Input
                                 id="latitude"
                                 value={dsLatitude}
-                                onChange={(e) => setDsLatitude(parseInt(e.target.value))}
+                                onChange={(e) => {
+                                    const value = parseInt(e.target.value);
+                                    setDsLatitude(isNaN(value) ? 0 : value);
+                                }}
+
                                 placeholder="Latitude"
                                 required
                             />
@@ -309,7 +394,11 @@ export function EscolaForm() {
                             <Input
                                 id="Longitude"
                                 value={dsLongitude}
-                                onChange={(e) => setDsLongitude(parseInt(e.target.value))}
+                                onChange={(e) => {
+                                    const value = parseInt(e.target.value);
+                                    setDsLongitude(isNaN(value) ? 0 : value);
+                                }}
+
                                 placeholder="Longitude"
                                 required
                             />
@@ -320,7 +409,11 @@ export function EscolaForm() {
                             <Input
                                 id="vinculadora"
                                 value={codVinc}
-                                onChange={(e) => setCodVinc(parseInt(e.target.value))}
+                                onChange={(e) => {
+                                    const value = parseInt(e.target.value);
+                                    setCodVinc(isNaN(value) ? 0 : value);
+                                }}
+
                                 placeholder="Latitude"
                                 required
                             />
@@ -329,8 +422,8 @@ export function EscolaForm() {
                     </div>
 
                     <div className="flex gap-4 pt-4">
-                        <Button type="submit" disabled={loading} className="flex-1">
-                            {"Criar Escola"}
+                        <Button type="submit" className="flex-1">
+                            {"Atualizar Escola"}
                         </Button>
                         <Button
                             type="button"
