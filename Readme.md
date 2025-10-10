@@ -1,5 +1,7 @@
 # Desafio Fullstack – Instalações Escolares
 
+### Autor:Ronaldo Luiz de Freitas Santos
+
 ## 💡 Descrição
 
 Aplicação fullstack com upload de CSV e CRUD de dados escolares,
@@ -12,8 +14,8 @@ usando JavaScript com o uso de frameworks como React.js e Next.js junto de Node.
 - Autenticação: JWT;
 - Host: Vercel.app.
 
-## 🛠 Como Executar via URL (Pendente)
-- Acessar o link: [lik a ser disponibilizado]
+## 🛠 Como Executar via URL
+- Acessar o link: https://desafio-escolas-front.vercel.app
 
 ## 🛠 Como Executar Localmente
 
