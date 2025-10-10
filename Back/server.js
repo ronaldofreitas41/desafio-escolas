@@ -24,7 +24,7 @@ app.use('/', routes);
 // função principal para iniciar o servidor
 const startServer = async () => {
   try {
-    const connection = await mysql.createConnection({
+    const pool = await mysql.createPool({
       host: process.env.MYSQLHOST,
       port: process.env.MYSQLPORT,
       user: process.env.MYSQLUSER,

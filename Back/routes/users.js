@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { connection } from "../db.js";
+import { pool } from "../db.js";
 
 const router = Router();
 
 router.get('/', async (req, res) => {
   try {
-    const [rows] = await connection.execute('SELECT * FROM users');
+    const [rows] = await pool.execute('SELECT * FROM users');
     res.json(rows);
   } catch (error) {
     console.error('Erro ao buscar usuários:', error.message);
@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const [result] = await connection.execute(
+    const [result] = await pool.execute(
       'INSERT INTO users (nome, email, senha, cpf, telefone) VALUES (?, ?, ?, ?, ?)',
       [nome, email, senha, cpf, telefone]
     );
@@ -45,7 +45,7 @@ router.delete('/', async (req, res) => {
   }
 
   try {
-    const [result] = await connection.execute(
+    const [result] = await pool.execute(
       'DELETE FROM users WHERE id = ?',
       [id]
     );
@@ -67,7 +67,7 @@ router.put('/', async (req, res) => {
   }
 
   try {
-    const [result] = await connection.execute(
+    const [result] = await pool.execute(
       'UPDATE users SET nome = ?, email = ?, senha = ?, cpf = ?, telefone = ? WHERE id = ?',
       [nome, email, senha, cpf, telefone, id]
     );

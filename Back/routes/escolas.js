@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { connection } from "../db.js";
+import { pool } from "../db.js";
 
 const router = Router();
 
 router.get('/', async (req, res) => {
   try {
-    const [rows] = await connection.execute('SELECT * FROM escolas');
+    const [rows] = await pool.execute('SELECT * FROM escolas');
     res.json(rows);
   } catch (error) {
     console.error('Erro ao buscar escolas:', error.message);
@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
 
 
   try {
-    const [result] = await connection.execute(
+    const [result] = await pool.execute(
       'INSERT INTO escolas (NOMEDEP, DE,MUN,CD_IBGE,DISTR,COD_ESC,CODESCMEC,NOMESC,SITUACAO,TIPOESC,ENDESC,NUMESC,COMPLEND,CEP,BAIESC,ZONA,DS_LONGITUDE,DS_LATITUDE,CODVINC) VALUES (?, ?, ?, ?, ?,?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?)',
       [NOMEDEP, DE, MUN, CD_IBGE, DISTR, COD_ESC, CODESCMEC, NOMESC, SITUACAO, TIPOESC, ENDESC, NUMESC, COMPLEND, CEP, BAIESC, ZONA, DS_LONGITUDE, DS_LATITUDE, CODVINC]
     );
@@ -47,7 +47,7 @@ router.delete('/', async (req, res) => {
 
 
   try {
-    const [result] = await connection.execute(
+    const [result] = await pool.execute(
       'DELETE FROM escolas WHERE id = ?',
       [id]
     );
@@ -70,7 +70,7 @@ router.put('/', async (req, res) => {
 
 
   try {
-    const [result] = await connection.execute(
+    const [result] = await pool.execute(
       `UPDATE escolas SET NOMEDEP = ?, DE = ?, MUN = ?, CD_IBGE = ?, DISTR = ?, COD_ESC = ?, CODESCMEC = ?, NOMESC = ?, SITUACAO = ?, TIPOESC = ?, ENDESC = ?, NUMESC = ?, COMPLEND = ?, CEP = ?, BAIESC = ?, ZONA = ?, DS_LONGITUDE = ?, DS_LATITUDE = ?, CODVINC = ? 
   WHERE id = ?`,
       [NOMEDEP, DE, MUN, CD_IBGE, DISTR, COD_ESC, CODESCMEC, NOMESC, SITUACAO, TIPOESC, ENDESC, NUMESC, COMPLEND, CEP, BAIESC, ZONA, DS_LONGITUDE, DS_LATITUDE, CODVINC, id]
