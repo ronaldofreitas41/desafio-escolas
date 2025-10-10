@@ -10,35 +10,15 @@ import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
 import { Alert, AlertDescription } from "../components/ui/alert"
 import { CheckCircle2, AlertCircle } from "lucide-react"
+import { Escola } from "../utils/types"
 
 
-interface EscolaFormProps {
-    escolaId?: string
-}
+// interface EscolaFormProps {
+//     escolaId?: string
+// }
 
-interface Escola {
-    NOMEDEP: String,
-    DE: String,
-    MUN: String,
-    CD_IBGE: String,
-    DISTR: String,
-    COD_ESC: Number,
-    CODESCMEC: Number,
-    NOMESC: String,
-    SITUACAO: String,
-    TIPOESC: String,
-    ENDESC: String,
-    NUMESC: Number,
-    COMPLEND: Number,
-    CEP: Number
-    BAIESC: String,
-    ZONA: String,
-    DS_LONGITUDE: Number,
-    DS_LATITUDE: Number,
-    CODVINC: Number
-}
 
-export function EscolaForm({ escolaId }: EscolaFormProps) {
+export function EscolaForm() {
     const router = useRouter()
     const [formData, setFormData] = useState<Escola>()
     const [nomeDep, setNomeDep] = useState("");
@@ -66,19 +46,18 @@ export function EscolaForm({ escolaId }: EscolaFormProps) {
     const [error, setError] = useState("")
 
     useEffect(() => {
-        if (escolaId) {
-            loadEscola()
-        }
-    }, [escolaId])
+        loadEscola()
+
+    },[]);
 
     const loadEscola = async () => {
+        console.log("aqui!")
         try {
             setLoadingData(true)
-            const escola = await fetch(`${process.env.NEXT_PUBLIC_BASE_BACK_URL}/escolas`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_BACK_URL}/escolas`, {
                 method: 'GET',
-
             })
-            // setFormData(escola)
+            console.log("Escolas: ", res)
         } catch (err) {
             setError(err instanceof Error ? err.message : "Erro ao carregar escola")
         } finally {
@@ -116,9 +95,9 @@ export function EscolaForm({ escolaId }: EscolaFormProps) {
     return (
         <Card className="border-border">
             <CardHeader>
-                <CardTitle>{escolaId ? "Editar Escola" : "Nova Escola"}</CardTitle>
+                <CardTitle>{"Nova Escola"}</CardTitle>
                 <CardDescription>
-                    {escolaId ? "Atualize as informações da escola" : "Preencha os dados da nova escola"}
+                    {"Preencha os dados da nova escola"}
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -159,7 +138,7 @@ export function EscolaForm({ escolaId }: EscolaFormProps) {
                                 required
                             />
                         </div>
-                        
+
                         <div className="space-y-2">
                             <Label htmlFor="Mun">Nome do Municipio:</Label>
                             <Input
@@ -170,7 +149,7 @@ export function EscolaForm({ escolaId }: EscolaFormProps) {
                                 required
                             />
                         </div>
-                        
+
                         <div className="space-y-2">
                             <Label htmlFor="cdIBGE">Codigo do IBGE:</Label>
                             <Input
@@ -181,7 +160,7 @@ export function EscolaForm({ escolaId }: EscolaFormProps) {
                                 required
                             />
                         </div>
-                        
+
                         <div className="space-y-2">
                             <Label htmlFor="distr">Nome do Distrito:</Label>
                             <Input
@@ -192,7 +171,7 @@ export function EscolaForm({ escolaId }: EscolaFormProps) {
                                 required
                             />
                         </div>
-                        
+
                         <div className="space-y-2">
                             <Label htmlFor="codESC">Código da Escola:</Label>
                             <Input
@@ -324,7 +303,7 @@ export function EscolaForm({ escolaId }: EscolaFormProps) {
                                 required
                             />
                         </div>
-                        
+
                         <div className="space-y-2">
                             <Label htmlFor="latitude">Longitude:</Label>
                             <Input
@@ -335,7 +314,7 @@ export function EscolaForm({ escolaId }: EscolaFormProps) {
                                 required
                             />
                         </div>
-                        
+
                         <div className="space-y-2">
                             <Label htmlFor="vinculadora">Codigo da Vinculadora:</Label>
                             <Input
@@ -351,7 +330,7 @@ export function EscolaForm({ escolaId }: EscolaFormProps) {
 
                     <div className="flex gap-4 pt-4">
                         <Button type="submit" disabled={loading} className="flex-1">
-                            {loading ? "Salvando..." : escolaId ? "Atualizar Escola" : "Criar Escola"}
+                            {"Criar Escola"}
                         </Button>
                         <Button
                             type="button"
