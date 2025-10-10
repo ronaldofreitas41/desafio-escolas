@@ -183,11 +183,11 @@ export function EscolaFormUpdate(escolaId: EscolaFormProps) {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="SITUACAO">Situação</Label>
+                <Label htmlFor="CODSIT">Situação</Label>
                 <Input
-                  id="SITUACAO"
-                  value={(formData.SITUACAO as string) || ""}
-                  onChange={(e) => handleChange("SITUACAO", e.target.value)}
+                  id="CODSIT"
+                  value={(formData.CODSIT as string) || ""}
+                  onChange={(e) => handleChange("CODSIT", e.target.value)}
                 />
               </div>
             </div>

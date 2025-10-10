@@ -22,7 +22,7 @@ export function EscolaFormCreate() {
     NOMESC: "",
     TIPOESC: 0,
     TIPOESC_DESC: "",
-    SITUACAO: "",
+    CODSIT: "",
     SALAS_AULA: 0,
     SALAS_ED_INF: 0,
     SALAS_ED_ESP: 0,
@@ -307,11 +307,11 @@ export function EscolaFormCreate() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="SITUACAO">Situação</Label>
+                <Label htmlFor="CODSIT">Situação</Label>
                 <Input
-                  id="SITUACAO"
-                  value={formData.SITUACAO as string}
-                  onChange={(e) => handleChange("SITUACAO", e.target.value)}
+                  id="CODSIT"
+                  value={formData.CODSIT as string}
+                  onChange={(e) => handleChange("CODSIT", e.target.value)}
                 />
               </div>
             </div>
@@ -1148,6 +1148,15 @@ export function EscolaFormCreate() {
                   type="number"
                   value={formData.SANITARIO_ADEQ_DEF as number}
                   onChange={(e) => handleChange("SANITARIO_ADEQ_DEF", Number.parseInt(e.target.value) || 0)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="SANITARIO_ADEQ_DEF_FEM">Sanitário Def. Fem.</Label>
+                <Input
+                  id="SANITARIO_ADEQ_DEF_FEM"
+                  type="number"
+                  value={formData.SANITARIO_ADEQ_DEF_FEM as number}
+                  onChange={(e) => handleChange("SANITARIO_ADEQ_DEF_FEM", Number.parseInt(e.target.value) || 0)}
                 />
               </div>
               <div className="space-y-2">

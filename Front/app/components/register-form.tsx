@@ -51,7 +51,7 @@ export function RegisterForm() {
         });
 
         if (res.ok) {
-          alert("Usuário salvo como esperado")
+          // alert("Usuário salvo como esperado")
           router.push("/login");
         } else {
           alert("verifique sua API" + res.status);

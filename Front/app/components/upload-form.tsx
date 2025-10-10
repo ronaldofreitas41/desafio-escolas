@@ -18,6 +18,7 @@ export function UploadForm() {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState("")
   const [preview, setPreview] = useState<string[][]>([])
+  const [uploadStats, setUploadStats] = useState({ total: 0, success: 0, failed: 0 })
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0]
@@ -30,17 +31,46 @@ export function UploadForm() {
       setError("")
       setSuccess(false)
 
-      // Preview do CSV
       const reader = new FileReader()
       reader.onload = (event) => {
         const text = event.target?.result as string
-        const lines = text.split("\n").slice(0, 6) // Primeiras 6 linhas
+        const lines = text.split(";").slice(0, 6)
         const data = lines.map((line) => line.split(","))
         setPreview(data)
       }
       reader.readAsText(selectedFile)
     }
   }
+  const parseCSVToJSON = (csvText: string): Record<string, any>[] => {
+    const delimiter = csvText.includes(";") ? ";" : ","; // detecta delimitador automaticamente
+    const lines = csvText.split("\n").filter((line) => line.trim() !== "");
+
+    if (lines.length === 0) return [];
+
+    const headers = lines[0].split(delimiter).map((h) => h.trim());
+    const data: Record<string, any>[] = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const values = lines[i].split(delimiter);
+      const row: Record<string, any> = {};
+
+      headers.forEach((header, index) => {
+        const value = values[index]?.trim() || "";
+
+        if (value === "" || value === "null" || value === "NULL") {
+          row[header] = null;
+        } else if (!isNaN(Number(value)) && value !== "") {
+          row[header] = Number(value);
+        } else {
+          row[header] = value;
+        }
+      });
+
+      data.push(row);
+    }
+
+    return data;
+  };  
 
   const handleUpload = async () => {
     if (!file) {
@@ -51,32 +81,62 @@ export function UploadForm() {
     setUploading(true)
     setProgress(0)
     setError("")
+    setUploadStats({ total: 0, success: 0, failed: 0 })
 
     try {
-      // Simular progresso visual
-      const progressInterval = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 90) {
-            clearInterval(progressInterval)
-            return 90
+      const text = await file.text()
+      const rows = parseCSVToJSON(text)
+
+      if (rows.length === 0) {
+        throw new Error("O arquivo CSV está vazio ou não possui dados válidos")
+      }
+
+      const total = rows.length
+      let successCount = 0
+      let failedCount = 0
+
+      setUploadStats({ total, success: 0, failed: 0 })
+
+      console.log("Rows", JSON.stringify(rows[0]))
+      const body = JSON.stringify(rows[0])
+      console.log("Body: ", body);
+
+      for (let i = 0; i < rows.length; i++) {
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_BACK_URL}/escolas`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(rows[i]),
+          })
+
+          if (response.ok) {
+            successCount++
+          } else {
+            failedCount++
+            console.error(`Erro ao importar linha ${i + 1}:`, await response.text())
           }
-          return prev + 10
-        })
-      }, 200)
+        } catch (err) {
+          failedCount++
+          console.error(`Erro ao importar linha ${i + 1}:`, err)
+        }
 
-    // Enviar arquivo para API
-    //   const result = await escolasAPI.uploadCSV(file)
+        const currentProgress = Math.round(((i + 1) / total) * 100)
+        setProgress(currentProgress)
+        setUploadStats({ total, success: successCount, failed: failedCount })
+      }
 
-      clearInterval(progressInterval)
-      setProgress(100)
       setUploading(false)
       setSuccess(true)
 
-    //   console.log(` ${result.count} escolas importadas com sucesso`)
+      if (failedCount > 0) {
+        setError(`${successCount} escolas importadas com sucesso. ${failedCount} falharam.`)
+      }
 
       setTimeout(() => {
-        router.push("/dashboard/escolas")
-      }, 2000)
+        // router.push("/dashboard/escolas")
+      }, 3000)
     } catch (err) {
       setUploading(false)
       setProgress(0)
@@ -139,6 +199,11 @@ export function UploadForm() {
                 <span className="font-medium">{progress}%</span>
               </div>
               <Progress value={progress} className="h-2" />
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <span>Total: {uploadStats.total}</span>
+                <span className="text-green-600">Sucesso: {uploadStats.success}</span>
+                <span className="text-red-600">Falhas: {uploadStats.failed}</span>
+              </div>
             </div>
           )}
 

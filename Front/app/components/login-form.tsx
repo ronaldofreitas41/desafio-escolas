@@ -34,7 +34,7 @@ export function LoginForm() {
       });
 
       if (res.ok) {
-        alert("Usuário logado com sucesso")
+        // alert("Usuário logado com sucesso")
         router.push("/dashboard");
       } else {
         alert("verifique sua API, Status: " + res.status);

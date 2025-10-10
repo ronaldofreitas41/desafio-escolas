@@ -8,7 +8,7 @@
     NOMESC: string
     TIPOESC: number
     TIPOESC_DESC: string
-    SITUACAO: string
+    CODSIT: string
     SALAS_AULA: number
     SALAS_ED_INF: number
     SALAS_ED_ESP: number
@@ -74,6 +74,7 @@
     SANITARIO_ADEQ_PRE_FEM: number
     SANITARIO_ADEQ_PRE_MASC: number
     SANITARIO_ADEQ_DEF: number
+    SANITARIO_ADEQ_DEF_FEM: number
     SANITARIO_ADEQ_DEF_MASC: number
     SANITARIO_AL_MASC: number
     SANITARIO_AL_FEM: number

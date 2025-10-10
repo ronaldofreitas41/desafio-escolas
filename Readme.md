@@ -59,11 +59,14 @@ npm run dev
 
 
 
-## 📌 Funcionalidades (Pendente)
+## 📌 Funcionalidades
 - Upload de CSV
 - CRUD completo em tela própria
-- (Opcional) Login/autenticação
+- Login/autenticação
 
-## 🔐 Usuário de teste (Pendente)
-- Login: admin@teste.com
+## Base de dados teste
+- https://dados.educacao.sp.gov.br/dataset/instalações-físicas-por-unidade-escolar
+
+## 🔐 Usuário de teste 
+- Login: usuario.teste@email.com
 - Senha: 123456
