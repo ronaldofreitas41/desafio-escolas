@@ -5,7 +5,7 @@ import Link from "next/link"
 import { Button } from "../../../../components/ui/button"
 import { EscolaFormUpdate } from "@/app/components/escola-form-update"
 
-export default function EditarEscolaPage({ params }: { params: { id: string } }) {
+export default function EditarEscolaPage({ params }: any) {
   return (
     <div className="min-h-screen">
       <DashboardHeader />

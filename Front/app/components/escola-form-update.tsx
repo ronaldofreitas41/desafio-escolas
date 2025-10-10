@@ -170,7 +170,7 @@ export function EscolaFormUpdate(escolaId: EscolaFormProps) {
                 <Label htmlFor="TIPOESC">Tipo da Escola</Label>
                 <Input
                   id="TIPOESC"
-                  value={(formData.TIPOESC as string) || ""}
+                  value={(formData.TIPOESC) || ""}
                   onChange={(e) => handleChange("TIPOESC", e.target.value)}
                 />
               </div>
